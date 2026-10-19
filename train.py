@@ -2,12 +2,12 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from dataset import train_dataloader, test_dataloader
-from model import SimpleCNN
+from model_resnet import ResNet
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
-model = SimpleCNN().to(device)
+model = ResNet().to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 epochs = 10
