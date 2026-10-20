@@ -10,7 +10,8 @@ print(f"Using device: {device}")
 model = ResNet().to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001,weight_decay=1e-4)
-epochs = 10
+epochs = 50
+scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
 
 for epoch in range(epochs):
     model.train()
@@ -42,7 +43,18 @@ for epoch in range(epochs):
             _, predicted = outputs.max(1)
             test_total += labels.size(0)
             test_correct += (predicted == labels).sum().item()
-           
-        test_accuracy = 100 * test_correct / test_total
-        print(f"Epoch [{epoch+1}/{epochs}], Loss: {running_loss/len(train_dataloader):.4f}, Train Accuracy: {train_accuracy:.2f}%, Test Accuracy: {test_accuracy:.2f}%")   
+
+    
+    scheduler.step()
+    current_lr = scheduler.get_last_lr()[0]
+
+    
+    test_accuracy = 100 * test_correct / test_total
+    avg_loss = running_loss / len(train_dataloader)
+    
+    
+    print(f"Epoch [{epoch+1}/{epochs}] | LR: {current_lr:.6f} | Loss: {avg_loss:.4f} | Train Acc: {train_accuracy:.2f}% | Test Acc: {test_accuracy:.2f}%")   
+        
+
+    
 
