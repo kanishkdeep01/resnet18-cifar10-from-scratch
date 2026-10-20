@@ -56,5 +56,5 @@ for epoch in range(epochs):
     print(f"Epoch [{epoch+1}/{epochs}] | LR: {current_lr:.6f} | Loss: {avg_loss:.4f} | Train Acc: {train_accuracy:.2f}% | Test Acc: {test_accuracy:.2f}%")   
         
 
-    
-
+torch.save(model.state_dict(), "elevated_resnet_cifar10.pth")
+print("Model saved successfully as elevated_resnet_cifar10.pth!")
