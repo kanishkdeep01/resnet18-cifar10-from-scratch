@@ -9,7 +9,7 @@ print(f"Using device: {device}")
 
 model = ResNet().to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.001,weight_decay=1e-4)
 epochs = 10
 
 for epoch in range(epochs):
