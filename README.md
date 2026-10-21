@@ -1,3 +1,8 @@
+[![Live Demo](https://img.shields.io/badge/Streamlit-Live%20Demo-FF4B4B?style=for-the-badge&logo=streamlit)](https://kanishk-resnet18-cifar10-from-scratch.streamlit.app)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/kanishkdeep01/resnet18-cifar10-from-scratch)
+
+# From-Scratch ResNet-18 Implementation on CIFAR-10
+
 # From-Scratch ResNet-18 Implementation on CIFAR-10
 
 A hand-built PyTorch implementation of the ResNet-18 architecture trained on CIFAR-10, engineered with custom data augmentation pipelines, L2 regularization, and Cosine Annealing learning rate scheduling to achieve a **93.20% test accuracy** (6.80% test error).
