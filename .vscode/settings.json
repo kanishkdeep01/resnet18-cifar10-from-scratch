@@ -1,6 +1,0 @@
-{
-    "python.defaultInterpreterPath": "C:/Users/vkani/AppData/Local/Programs/Python/Python310/python.exe",
-    "code-runner.executorMap": {
-        "python": "C:/Users/vkani/AppData/Local/Programs/Python/Python310/python.exe -u"
-    }
-}
