@@ -4,3 +4,6 @@ data/
 # Python cache
 __pycache__/
 *.pyc
+.vscode/
+.gradio/
+tempCodeRunnerFile.py
