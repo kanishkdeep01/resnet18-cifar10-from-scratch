@@ -48,23 +48,28 @@ Evaluated across 10,000 held-out test images:
 ├── elevated_resnet_cifar10.pth # Saved model weights
 ├── confusion_matrix.png        # Generated evaluation heatmap
 └── requirements.txt            # Python dependencies
+```
 
+---
 
-Quickstart
-1. Installation
+## Quickstart
+
+### 1. Installation
 Clone the repository and install the required packages:
-
-Bash
-git clone [https://github.com/kanishkdeep01/resnet18-cifar10-from-scratch](https://github.com/kanishkdeep01/resnet18-cifar10-from-scratch)
+```bash
+git clone https://github.com/kanishkdeep01/resnet18-cifar10-from-scratch.git
 cd resnet18-cifar10-from-scratch
 pip install torch torchvision gradio scikit-learn seaborn matplotlib
-2. Model Evaluation
-Generate the per-class performance report and save confusion_matrix.png:
+```
 
-Bash
+### 2. Model Evaluation
+Generate the per-class performance report and save `confusion_matrix.png`:
+```bash
 python evaluate.py
-3. Launch Web Interface
-Boot the local interactive Gradio interface:
+```
 
-Bash
+### 3. Launch Web Interface
+Boot the local interactive Gradio interface:
+```bash
 python app.py
+```
