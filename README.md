@@ -1,9 +1,7 @@
+# From-Scratch ResNet-18 Implementation on CIFAR-10
+
 [![Live Demo](https://img.shields.io/badge/Streamlit-Live%20Demo-FF4B4B?style=for-the-badge&logo=streamlit)](https://kanishk-resnet18-cifar10-from-scratch.streamlit.app)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/kanishkdeep01/resnet18-cifar10-from-scratch)
-
-# From-Scratch ResNet-18 Implementation on CIFAR-10
-
-# From-Scratch ResNet-18 Implementation on CIFAR-10
 
 A hand-built PyTorch implementation of the ResNet-18 architecture trained on CIFAR-10, engineered with custom data augmentation pipelines, L2 regularization, and Cosine Annealing learning rate scheduling to achieve a **93.20% test accuracy** (6.80% test error).
 
@@ -27,7 +25,7 @@ The model was developed iteratively, logging performance across architectural an
 
 This project reproduces and adapts the residual learning framework introduced by **He et al. (2015)** (*Deep Residual Learning for Image Recognition*, [arXiv:1512.03385](https://arxiv.org/abs/1512.03385)).
 
-While the original paper evaluates specialized ResNet variants for CIFAR-10 ($N \in \{2, 3, 5, 9\}$ yielding 20, 32, 56, and 110 layers), this repository adapts the standard **ResNet-18** architecture for $32 \times 32$ images by replacing the large initial $7 \times 7$ conv/max-pool stem with a single $3 \times 3$ conv layer (stride 1, padding 1).
+While the original paper evaluates specialized CIFAR-10 ResNet architectures of depth $6n + 2$ ($n \in \{3, 5, 7, 9, 18\}$ yielding 20, 32, 44, 56, and 110 layers), this repository adapts the standard **ResNet-18** architecture for $32 \times 32$ images by replacing the large initial $7 \times 7$ conv/max-pool stem with a single $3 \times 3$ conv layer (stride 1, padding 1).
 
 ### Comparative Benchmark
 With a **6.80% test error**, this ResNet-18 implementation sits directly between the original paper's ResNet-56 and ResNet-110 CIFAR-10 benchmarks (Table 6 in He et al.):
@@ -74,7 +72,7 @@ Evaluated across 10,000 held-out test images:
   * **Augmentation:** `RandomCrop(32, padding=4)` and `RandomHorizontalFlip()` applied strictly during training.
   * **Weight Decay:** L2 penalty (`weight_decay=1e-4`) applied via Adam optimizer to prevent parameter memorization.
   * **Learning Rate Scheduling:** `CosineAnnealingLR` scheduler decaying smoothly over 50 epochs.
-* **Inference Pipeline & Input Defense (`app.py`):** Interactive Gradio web interface with input sanitization—incorporating automated $32 \times 32$ image resizing and channel normalization $(\mu, \sigma)$ matching the CIFAR-10 dataset statistics to eliminate out-of-distribution runtime errors.
+* **Inference Pipeline & Input Defense (`streamlit_app.py`):** Interactive Streamlit web application with input sanitization—incorporating automated $32 \times 32$ image resizing and channel normalization $(\mu, \sigma)$ matching CIFAR-10 dataset statistics to eliminate out-of-distribution runtime errors.
 
 ---
 
@@ -85,13 +83,11 @@ Evaluated across 10,000 held-out test images:
 ├── model_resnet.py             # ResNet-18 architecture implementation
 ├── train.py                    # 50-epoch training loop & checkpointing
 ├── evaluate.py                 # Per-class metrics & confusion matrix generator
-├── app.py                      # Gradio web application with defense pipeline
+├── app.py                      # Local Gradio demo interface
+├── streamlit_app.py            # Streamlit web application & live cloud demo
 ├── elevated_resnet_cifar10.pth # Saved model weights
 ├── confusion_matrix.png        # Generated evaluation heatmap
 └── requirements.txt            # Python dependencies
-```
-
----
 
 ## Quickstart
 
