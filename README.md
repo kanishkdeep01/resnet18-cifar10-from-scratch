@@ -1,12 +1,48 @@
-# Elevated ResNet-18: Custom PyTorch Architecture on CIFAR-10
+# From-Scratch ResNet-18 Implementation on CIFAR-10
 
-A custom 18-layer Residual Network (ResNet-18) built from scratch in PyTorch, engineered with custom data augmentation pipelines, L2 regularization, and Cosine Annealing learning rate scheduling to achieve a certified **93.20% test accuracy** on CIFAR-10.
+A hand-built PyTorch implementation of the ResNet-18 architecture trained on CIFAR-10, engineered with custom data augmentation pipelines, L2 regularization, and Cosine Annealing learning rate scheduling to achieve a **93.20% test accuracy** (6.80% test error).
 
 ![Confusion Matrix](confusion_matrix.png)
 
 ---
 
-## Key Results & Metrics
+## Performance Progression
+
+The model was developed iteratively, logging performance across architectural and optimization changes:
+
+| Iteration | Architecture & Strategy | Test Accuracy | Test Error |
+| :--- | :--- | :---: | :---: |
+| **Baseline** | Simple 3-Layer Convolutional Network (No residual links, un-augmented) | 74.88% | 25.12% |
+| **Un-augmented ResNet** | Hand-built ResNet-18 (10 epochs, raw CIFAR-10 data) | 82.77% | 17.23% |
+| **Final ResNet-18** | ResNet-18 (50 epochs + Augmentations + Adam + Cosine Annealing) | **93.20%** | **6.80%** |
+
+---
+
+## Academic Context & Paper Alignment
+
+This project reproduces and adapts the residual learning framework introduced by **He et al. (2015)** (*Deep Residual Learning for Image Recognition*, [arXiv:1512.03385](https://arxiv.org/abs/1512.03385)).
+
+While the original paper evaluates specialized ResNet variants for CIFAR-10 ($N \in \{2, 3, 5, 9\}$ yielding 20, 32, 56, and 110 layers), this repository adapts the standard **ResNet-18** architecture for $32 \times 32$ images by replacing the large initial $7 \times 7$ conv/max-pool stem with a single $3 \times 3$ conv layer (stride 1, padding 1).
+
+### Comparative Benchmark
+With a **6.80% test error**, this ResNet-18 implementation sits directly between the original paper's ResNet-56 and ResNet-110 CIFAR-10 benchmarks (Table 6 in He et al.):
+* **ResNet-56 (Paper):** 6.97% test error
+* **ResNet-18 (This Implementation):** **6.80% test error**
+* **ResNet-110 (Paper):** 6.41% test error
+
+### Key Implementation Differences
+
+| Aspect | Original Paper (He et al.) | This Implementation |
+| :--- | :--- | :--- |
+| **Optimizer** | SGD with Momentum (0.9) | Adam (`lr=1e-3`, `weight_decay=1e-4`) |
+| **LR Schedule** | Step decay (divide by 10 at 32k & 48k steps) | `CosineAnnealingLR` |
+| **Training Budget** | 64k iterations (~182 epochs) | 50 epochs |
+| **Dataset Split** | 45k train / 5k validation split | Full 50k train / 10k test split |
+| **Shortcut Connections** | Option A (Identity + Zero-padding for expansion) | Option B ($1 \times 1$ conv projections for dimension changes) |
+
+---
+
+## Per-Class Evaluation Metrics
 
 Evaluated across 10,000 held-out test images:
 
@@ -26,14 +62,14 @@ Evaluated across 10,000 held-out test images:
 
 ---
 
-## Architectural Highlights
+## Architectural Details
 
-* **Custom Residual Blocks:** Implemented custom `BasicBlock` modules featuring $3 \times 3$ convolutional layers, Batch Normalization, shortcut residual skip-connections, and explicit $1 \times 1$ projections for spatial downsampling.
+* **From-Scratch Modules:** Hand-built `BasicBlock` modules featuring $3 \times 3$ convolutional layers, Batch Normalization, residual skip-connections, and explicit $1 \times 1$ projection shortcuts for spatial downsampling.
 * **Regularization & Optimization Pipeline:**
-  * **Data Augmentations:** `RandomCrop(32, padding=4)` and `RandomHorizontalFlip()` applied strictly during training.
-  * **Weight Decay:** L2 penalty (`weight_decay=1e-4`) with Adam optimizer to limit parameter memorization.
-  * **Learning Rate Scheduling:** `CosineAnnealingLR` scheduler decaying smoothly down across 50 training epochs.
-* **Inference Defenses (`app.py`):** Production-ready Gradio web app including mandatory input sanitization—automated $32 \times 32$ image resizing and exact CIFAR-10 channel normalization $(\mu, \sigma)$ to eliminate out-of-distribution runtime failures.
+  * **Augmentation:** `RandomCrop(32, padding=4)` and `RandomHorizontalFlip()` applied strictly during training.
+  * **Weight Decay:** L2 penalty (`weight_decay=1e-4`) applied via Adam optimizer to prevent parameter memorization.
+  * **Learning Rate Scheduling:** `CosineAnnealingLR` scheduler decaying smoothly over 50 epochs.
+* **Inference Pipeline & Input Defense (`app.py`):** Interactive Gradio web interface with input sanitization—incorporating automated $32 \times 32$ image resizing and channel normalization $(\mu, \sigma)$ matching the CIFAR-10 dataset statistics to eliminate out-of-distribution runtime errors.
 
 ---
 
